@@ -17,7 +17,6 @@ func _on_find_pressed():
 	user = backend.find(id)
 
 	if user.has_method("first"):
-		print("user is Pair")
 		$ui/panel/info.text = user.second
 		return
 

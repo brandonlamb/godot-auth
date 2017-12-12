@@ -12,6 +12,8 @@ config_version=3
 
 config/name="Godot Auth"
 run/main_scene="res://main.tscn"
+run/disable_stdout=true
+run/disable_stderr=true
 config/icon="res://icon.png"
 
 [display]

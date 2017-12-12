@@ -242,6 +242,10 @@ max_lines_visible = -1
 
 [connection signal="pressed" from="ui/panel/button_container/create_user" to="." method="_on_create_user_pressed"]
 
+[connection signal="pressed" from="ui/panel/button_container/update_user" to="." method="_on_update_user_pressed"]
+
+[connection signal="pressed" from="ui/panel/button_container/remove_user" to="." method="_on_remove_user_pressed"]
+
 [connection signal="pressed" from="ui/panel/button_container/quit" to="." method="_on_quit_pressed"]
 
 

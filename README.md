@@ -12,6 +12,8 @@ cd c:\Users\YOUR_USERNAME\Documents\src\godot-auth\example
 mklink /D addons c:\Users\YOUR_USERNAME\Documents\src\godot-auth\addons
 ```
 
+If you check out the main.gd, as of this writing, there's probably a good bit of cleanup that can be done to avoid DRY.
+
 ## File Backend
 
 It seems that the `user://` path resolves to `C:\Users\YOUR_USERNAME\AppData\Roaming\Godot\app_userdata\Godot Auth`.

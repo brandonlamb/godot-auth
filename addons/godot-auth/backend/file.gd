@@ -1,19 +1,84 @@
-extends Reference
+extends "res://addons/godot-auth/backend.gd"
 
-func create(user = {}):
-	pass
+const Pair = preload("res://addons/godot-auth/pair.gd")
+const User = preload("res://addons/godot-auth/user.gd")
 
-func find(username = ""):
-	pass
+const AUTH_DIR = "user://auth"
 
-func update(user = {}):
-	pass
+var auth_dir
 
-func remove(user = {}):
-	pass
+"""
+Constructor accepting directory to store auth files
+"""
+func _init(auth_dir_ = AUTH_DIR):
+	auth_dir = str(auth_dir_)
 
-func removeById(id = 0):
-	pass
+	# If the auth directory doesnt exist, create it
+	var dir = Directory.new()
+	if !dir.dir_exists(auth_dir):
+		dir.open("user://")
+		dir.make_dir(auth_dir)
 
-func disable(user = {}):
-	pass
+func create(user):
+	var filename = str(auth_dir, "/", user.id, ".json")
+
+	var dir = Directory.new()
+	if dir.file_exists(filename):
+		return Pair.new(false, str("Auth file already exists for user: id=", user.id))
+
+	var file = File.new()
+	file.open(filename, File.WRITE)
+	file.store_line(user.to_json())
+	file.close()
+
+func find(id):
+	var filename = str(auth_dir, "/", id, ".json")
+
+	var dir = Directory.new()
+	if !dir.file_exists(filename):
+		return Pair.new(false, str("Auth file does not exist for user: id=", id))
+
+	# use an empty dictionary to assign temporary data to
+	var tmp = {}
+
+	# Open file and read the data in
+	var file = File.new()
+	file.open(filename, File.READ)
+
+	while(!file.eof_reached()):
+		tmp.parse_json(file.get_line())
+
+	file.close()
+
+	return User.new(tmp["id"], tmp["username"], tmp["password"], tmp["status"])
+
+func update(user):
+	var filename = str(auth_dir, "/", user.id, ".json")
+
+	var dir = Directory.new()
+	if !dir.file_exists(filename):
+		return Pair.new(false, str("Auth file does not exist for user: id=", user.id))
+
+	var file = File.new()
+	file.open(filename, File.WRITE)
+	file.store_line(user.to_json())
+	file.close()
+
+	return Pair.new(true, str("Successfully updated auth file for user: file=", filename))
+
+func remove(id):
+	var filename = str(auth_dir, "/", id, ".json")
+
+	var dir = Directory.new()
+	if !dir.file_exists(filename):
+		return Pair.new(false, str("Auth file does not exist for user: id=", id))
+
+	dir.remove(filename)
+
+	return Pair.new(true, str("Successfully removed auth file for user: file=", filename))
+
+func disable(id):
+	var user = find(id)
+
+	user.set_status("inactive")
+	update(user)

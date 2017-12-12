@@ -1,19 +1,16 @@
 extends Reference
 
-func create(user = {}):
+func create(user):
 	pass
 
-func find(username = ""):
+func find(id):
 	pass
 
-func update(user = {}):
+func update(user):
 	pass
 
-func remove(user = {}):
+func remove(id):
 	pass
 
-func removeById(id = 0):
-	pass
-
-func disable(user = {}):
+func disable(id):
 	pass

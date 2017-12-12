@@ -12,6 +12,10 @@ cd c:\Users\YOUR_USERNAME\Documents\src\godot-auth\example
 mklink /D addons c:\Users\YOUR_USERNAME\Documents\src\godot-auth\addons
 ```
 
+## File Backend
+
+It seems that the `user://` path resolves to `C:\Users\YOUR_USERNAME\AppData\Roaming\Godot\app_userdata\Godot Auth`.
+
 ## Links
 
 * https://coffeecoderblog.wordpress.com/2016/07/03/creating-a-save-system-in-godot/

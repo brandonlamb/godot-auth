@@ -22,3 +22,6 @@ func set_status(status_):
 		status = status_
 	else:
 		return Pair.new(false, str("Invalid status: status=", status_))
+
+func to_json():
+	return to_json({id = id, username = username, password = password, status = status})

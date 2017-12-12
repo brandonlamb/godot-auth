@@ -5,7 +5,7 @@ const FileBackend = preload("res://addons/godot-auth/backend/file.gd")
 const Pair = preload("res://addons/godot-auth/pair.gd")
 const User = preload("res://addons/godot-auth/user.gd")
 
-onready var backend = FileBackend.new("user://auth")
+onready var backend = FileBackend.new("user://auth2")
 onready var auth = Auth.new(backend)
 
 var user
@@ -21,10 +21,8 @@ func _on_find_pressed():
 		$ui/panel/info.text = user.second
 		return
 
-	print("Class: ", user.get_class())
-	print("user=", user.to_json())
-	#$ui/panel/line_container/username.text = user.username
-	#$ui/panel/line_container/password.text = user.password
+	$ui/panel/line_container/username.text = user.username
+	$ui/panel/line_container/password.text = user.password
 
 func _on_create_user_pressed():
 	var id = $ui/panel/line_container/id.text.to_int()

@@ -28,8 +28,10 @@ func create(user):
 
 	var file = File.new()
 	file.open(filename, File.WRITE)
-	file.store_line(user.to_json())
+	if file.is_open(): file.store_line(user.to_json())
 	file.close()
+
+	return Pair.new(true, str("Successfully created auth file for user: id=", user.id))
 
 func find(id):
 	var filename = str(auth_dir, "/", id, ".json")
@@ -38,19 +40,19 @@ func find(id):
 	if !dir.file_exists(filename):
 		return Pair.new(false, str("Auth file does not exist for user: id=", id))
 
-	# use an empty dictionary to assign temporary data to
-	var tmp = {}
+	# User variable to return back after hydrating from file
+	var user
 
 	# Open file and read the data in
 	var file = File.new()
 	file.open(filename, File.READ)
-
-	while(!file.eof_reached()):
-		tmp.parse_json(file.get_line())
-
+	var t = parse_json(file.get_as_text())
 	file.close()
 
-	return User.new(tmp["id"], tmp["username"], tmp["password"], tmp["status"])
+	# Debug output
+	print(t)
+
+	return User.new(t.id, t.username, t.password, t.status)
 
 func update(user):
 	var filename = str(auth_dir, "/", user.id, ".json")
@@ -61,7 +63,7 @@ func update(user):
 
 	var file = File.new()
 	file.open(filename, File.WRITE)
-	file.store_line(user.to_json())
+	if file.is_open(): file.store_line(user.to_json())
 	file.close()
 
 	return Pair.new(true, str("Successfully updated auth file for user: file=", filename))
